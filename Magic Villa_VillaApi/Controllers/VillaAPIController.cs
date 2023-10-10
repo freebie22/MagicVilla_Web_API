@@ -1,6 +1,7 @@
 ﻿using Magic_Villa_VillaApi.Data;
 using Magic_Villa_VillaApi.Models;
 using Magic_Villa_VillaApi.Models.DTO;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Magic_Villa_VillaApi.Controllers
@@ -13,8 +14,6 @@ namespace Magic_Villa_VillaApi.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<VillaDTO>> GetVillas() => Ok(VillaStore.villaList);
-
-
         //[ProducesResponseType(200)]/*, Type = typeof(VillaDTO))*/
         //[ProducesResponseType(400)]
         //[ProducesResponseType(404)]
@@ -66,6 +65,80 @@ namespace Magic_Villa_VillaApi.Controllers
 
             return CreatedAtRoute("GetVilla", new { id = villa.ID }, villa);
 
+        }
+
+        [HttpDelete("{id:int}", Name = "DeleteVilla")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult DeleteVilla(int id)
+        {
+            if(id == 0)
+            {
+                ModelState.AddModelError("Zero ID Error", "Id of villa cannot be 0");
+                return BadRequest();
+            }
+
+            var villaFromStore = VillaStore.villaList.FirstOrDefault(v => v.ID == id);
+
+            if(villaFromStore == null)
+            {
+                return NotFound();
+            }
+
+            VillaStore.villaList.Remove(villaFromStore);
+
+            return NoContent();
+        }
+
+
+        [HttpPut("{id:int}", Name = "UpdateVilla")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<VillaDTO> UpdateVilla(int id, [FromBody] VillaDTO villa)
+        {
+            if (id == 0)
+            {
+                ModelState.AddModelError("Zero ID Error", "Id of villa cannot be 0");
+                return BadRequest();
+            }
+
+            var villaFromStore = VillaStore.villaList.FirstOrDefault(v => v.ID == id);
+
+            if (villaFromStore == null)
+            {
+                return NotFound();
+            }
+
+            villaFromStore.Name = villa.Name;
+            villaFromStore.Occupancy = villa.Occupancy;
+            villaFromStore.SqFt = villa.SqFt;
+
+            return Ok(villaFromStore);
+        }
+        [HttpPatch("{id:int}", Name = "UpdateVillaPartially")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult UpdateVillaPartially(int id, JsonPatchDocument<VillaDTO> jsonDTO)
+        {
+            if (id == 0)
+            {
+                ModelState.AddModelError("Zero ID Error", "Id of villa cannot be 0");
+                return BadRequest();
+            }
+
+            var villaFromStore = VillaStore.villaList.FirstOrDefault(v => v.ID == id);
+
+            if (villaFromStore == null)
+            {
+                return NotFound();
+            }
+
+            jsonDTO.ApplyTo(villaFromStore, ModelState);
+
+            return NoContent();
         }
 
     }
