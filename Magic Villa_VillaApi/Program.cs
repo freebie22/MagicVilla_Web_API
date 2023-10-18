@@ -1,4 +1,15 @@
+using Magic_Villa_VillaApi.Data;
+using Magic_Villa_VillaApi.Logging;
+using Serilog;
+
+
+
 var builder = WebApplication.CreateBuilder(args);
+
+//Log.Logger = new LoggerConfiguration().MinimumLevel.Information().WriteTo.File("logs/villaLogs.txt",
+//    rollingInterval: RollingInterval.Day).CreateLogger();
+
+//builder.Host.UseSerilog();
 
 // Add services to the container.
 
@@ -6,6 +17,7 @@ builder.Services.AddControllers().AddNewtonsoftJson().AddXmlDataContractSerializ
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSingleton<ILogging, Logging>();
 
 var app = builder.Build();
 

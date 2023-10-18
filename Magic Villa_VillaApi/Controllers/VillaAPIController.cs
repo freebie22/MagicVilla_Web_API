@@ -1,4 +1,5 @@
 ﻿using Magic_Villa_VillaApi.Data;
+using Magic_Villa_VillaApi.Logging;
 using Magic_Villa_VillaApi.Models;
 using Magic_Villa_VillaApi.Models.DTO;
 using Microsoft.AspNetCore.JsonPatch;
@@ -11,9 +12,22 @@ namespace Magic_Villa_VillaApi.Controllers
    // [Route("api/[controller]")]
     public class VillaAPIController : ControllerBase
     {
+
+        private readonly ILogging _logger;
+
+        public VillaAPIController(ILogging _logger)
+        {
+            this._logger = _logger;
+        }
+
+
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<VillaDTO>> GetVillas() => Ok(VillaStore.villaList);
+        public ActionResult<IEnumerable<VillaDTO>> GetVillas()
+        {
+            _logger.Log("Getting all villas", "SUCCESS");
+            return Ok(VillaStore.villaList); 
+        }
         //[ProducesResponseType(200)]/*, Type = typeof(VillaDTO))*/
         //[ProducesResponseType(400)]
         //[ProducesResponseType(404)]
@@ -25,6 +39,7 @@ namespace Magic_Villa_VillaApi.Controllers
         {
             if(id == 0)
             {
+                //_logger.LogError($"Get Villa Error with ID = {id}");
                 return BadRequest();
             }
 
@@ -32,9 +47,14 @@ namespace Magic_Villa_VillaApi.Controllers
 
             if (villa == null)
             {
+                _logger.Log("Villa hasn't been found.", "ERROR");
                 return NotFound();
             }
 
+            //_logger.LogInformation($"Got villa with such parameters: \n" +
+            //    $"Villa's name = {villa.Name}\n" +
+            //    $"Villa's occupancy = {villa.Occupancy}\n" +
+            //    $"Villa's square = {villa.SqFt} sqft");
             return Ok(villa);
         }
 
@@ -46,6 +66,7 @@ namespace Magic_Villa_VillaApi.Controllers
         {
             if(villa == null)
             {
+                //_logger.LogError("Villa cannot be created");
                 return BadRequest(villa);
             }
 
@@ -59,12 +80,14 @@ namespace Magic_Villa_VillaApi.Controllers
             if(villa.Name == "string")
             {
                 villa.Name = "Test Villa";
+                //_logger.LogWarning("The name of new villa has set to Test Villa, because it was by default.");
             }
 
             VillaStore.villaList.Add(villa);
 
-            return CreatedAtRoute("GetVilla", new { id = villa.ID }, villa);
 
+            //_logger.LogInformation($"New villa succesfully created. You can see result in new callback of GET method.");
+            return CreatedAtRoute("GetVilla", new { id = villa.ID }, villa);
         }
 
         [HttpDelete("{id:int}", Name = "DeleteVilla")]
