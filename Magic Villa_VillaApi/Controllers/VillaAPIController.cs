@@ -12,20 +12,17 @@ namespace Magic_Villa_VillaApi.Controllers
    // [Route("api/[controller]")]
     public class VillaAPIController : ControllerBase
     {
+        //private readonly ILogger<VillaAPIController> logger;
 
-        private readonly ILogging _logger;
-
-        public VillaAPIController(ILogging _logger)
-        {
-            this._logger = _logger;
-        }
-
+        //public VillaAPIController(ILogger<VillaAPIController> logger)
+        //{
+        //    this.logger = logger;
+        //}
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<VillaDTO>> GetVillas()
         {
-            _logger.Log("Getting all villas", "SUCCESS");
             return Ok(VillaStore.villaList); 
         }
         //[ProducesResponseType(200)]/*, Type = typeof(VillaDTO))*/
@@ -47,7 +44,6 @@ namespace Magic_Villa_VillaApi.Controllers
 
             if (villa == null)
             {
-                _logger.Log("Villa hasn't been found.", "ERROR");
                 return NotFound();
             }
 
