@@ -1,6 +1,7 @@
 using Magic_Villa_VillaApi.Data;
 using Magic_Villa_VillaApi.Logging;
 using Magic_Villa_VillaApi.Mapper;
+using Magic_Villa_VillaApi.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -22,6 +23,8 @@ builder.Services.AddAutoMapper(typeof(MappingConfig));
 builder.Services.AddSingleton(typeof(ILogging), typeof(Logging));
 builder.Services.AddSingleton(typeof(ILogging<>), typeof(LoggingGeneric<>));
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSQLConnection")));
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddScoped<IVillaRepository, VillaRepository>();
 
 
 
