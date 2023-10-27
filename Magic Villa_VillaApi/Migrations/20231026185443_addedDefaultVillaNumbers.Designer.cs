@@ -4,6 +4,7 @@ using Magic_Villa_VillaApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Magic_Villa_VillaApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231026185443_addedDefaultVillaNumbers")]
+    partial class addedDefaultVillaNumbers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,7 +73,7 @@ namespace Magic_Villa_VillaApi.Migrations
                         {
                             Id = 1,
                             Amenity = "",
-                            CreatedDate = new DateTime(2023, 10, 27, 13, 7, 53, 295, DateTimeKind.Local).AddTicks(4646),
+                            CreatedDate = new DateTime(2023, 10, 26, 21, 54, 42, 936, DateTimeKind.Local).AddTicks(1048),
                             Details = "Some default details",
                             ImageUrl = "",
                             Name = "Royal Villa",
@@ -83,7 +86,7 @@ namespace Magic_Villa_VillaApi.Migrations
                         {
                             Id = 2,
                             Amenity = "",
-                            CreatedDate = new DateTime(2023, 10, 27, 13, 7, 53, 295, DateTimeKind.Local).AddTicks(4702),
+                            CreatedDate = new DateTime(2023, 10, 26, 21, 54, 42, 936, DateTimeKind.Local).AddTicks(1101),
                             Details = "Some default diamond villa details",
                             ImageUrl = "",
                             Name = "Diamond Villa",
@@ -96,7 +99,7 @@ namespace Magic_Villa_VillaApi.Migrations
                         {
                             Id = 3,
                             Amenity = "",
-                            CreatedDate = new DateTime(2023, 10, 27, 13, 7, 53, 295, DateTimeKind.Local).AddTicks(4705),
+                            CreatedDate = new DateTime(2023, 10, 26, 21, 54, 42, 936, DateTimeKind.Local).AddTicks(1105),
                             Details = "Some default ukrainian villa details",
                             ImageUrl = "",
                             Name = "Ukrainian Villa",
@@ -122,12 +125,7 @@ namespace Magic_Villa_VillaApi.Migrations
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("VillaId")
-                        .HasColumnType("int");
-
                     b.HasKey("VillaNo");
-
-                    b.HasIndex("VillaId");
 
                     b.ToTable("VillaNumbers");
 
@@ -135,38 +133,24 @@ namespace Magic_Villa_VillaApi.Migrations
                         new
                         {
                             VillaNo = 100,
-                            CreatedDate = new DateTime(2023, 10, 27, 13, 7, 53, 295, DateTimeKind.Local).AddTicks(4857),
+                            CreatedDate = new DateTime(2023, 10, 26, 21, 54, 42, 936, DateTimeKind.Local).AddTicks(1268),
                             SpecialDetails = "Villa number is 100",
-                            UpdatedDate = new DateTime(2023, 10, 27, 13, 7, 53, 295, DateTimeKind.Local).AddTicks(4861),
-                            VillaId = 0
+                            UpdatedDate = new DateTime(2023, 10, 26, 21, 54, 42, 936, DateTimeKind.Local).AddTicks(1272)
                         },
                         new
                         {
                             VillaNo = 101,
-                            CreatedDate = new DateTime(2023, 10, 27, 13, 7, 53, 295, DateTimeKind.Local).AddTicks(4864),
+                            CreatedDate = new DateTime(2023, 10, 26, 21, 54, 42, 936, DateTimeKind.Local).AddTicks(1274),
                             SpecialDetails = "Villa number is 101",
-                            UpdatedDate = new DateTime(2023, 10, 27, 13, 7, 53, 295, DateTimeKind.Local).AddTicks(4865),
-                            VillaId = 0
+                            UpdatedDate = new DateTime(2023, 10, 26, 21, 54, 42, 936, DateTimeKind.Local).AddTicks(1276)
                         },
                         new
                         {
                             VillaNo = 102,
-                            CreatedDate = new DateTime(2023, 10, 27, 13, 7, 53, 295, DateTimeKind.Local).AddTicks(4868),
+                            CreatedDate = new DateTime(2023, 10, 26, 21, 54, 42, 936, DateTimeKind.Local).AddTicks(1279),
                             SpecialDetails = "Villa number is 102",
-                            UpdatedDate = new DateTime(2023, 10, 27, 13, 7, 53, 295, DateTimeKind.Local).AddTicks(4870),
-                            VillaId = 0
+                            UpdatedDate = new DateTime(2023, 10, 26, 21, 54, 42, 936, DateTimeKind.Local).AddTicks(1281)
                         });
-                });
-
-            modelBuilder.Entity("Magic_Villa_VillaApi.Models.VillaNumber", b =>
-                {
-                    b.HasOne("Magic_Villa_VillaApi.Models.Villa", "Villa")
-                        .WithMany()
-                        .HasForeignKey("VillaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Villa");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,4 +1,5 @@
 ﻿using Magic_Villa_VillaApi.Data;
+using Magic_Villa_VillaApi.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -25,7 +26,7 @@ namespace Magic_Villa_VillaApi.Repository
             return await query.ToListAsync();
         }
 
-        public async Task<T> GetAsync(Expression<Func<T, bool>>? filter = null, bool isTracked = true)
+        public virtual async Task<T> GetAsync(Expression<Func<T, bool>>? filter = null, bool isTracked = true)
         {
             IQueryable<T> query = dbSet;
             if (filter != null)
@@ -36,6 +37,7 @@ namespace Magic_Villa_VillaApi.Repository
             {
                 query = query.AsNoTracking();
             }
+
             return await query.FirstOrDefaultAsync();
         }
 

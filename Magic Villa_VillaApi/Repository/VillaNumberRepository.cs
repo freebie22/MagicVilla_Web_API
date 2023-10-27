@@ -2,22 +2,23 @@
 using Magic_Villa_VillaApi.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using System.Linq;
 
 namespace Magic_Villa_VillaApi.Repository
 {
-    public sealed class VillaRepository : Repository<Villa>, IVillaRepository
+    public class VillaNumberRepository : Repository<VillaNumber>, IVillaNumberRepository
     {
         private readonly ApplicationDbContext _context;
 
-        public VillaRepository(ApplicationDbContext context) : base(context)
+        public VillaNumberRepository(ApplicationDbContext context) : base(context)
         {
             _context = context;
         }
 
-        public async Task UpdateAsync(Villa entity)
+        public async Task UpdateAsync(VillaNumber villaNumber)
         {
-            entity.UpdateDate = DateTime.Now;
-            _context.Villas.Update(entity);
+            villaNumber.UpdatedDate = DateTime.Now;
+            _context.Update(villaNumber);
             await SaveAsync();
         }
     }

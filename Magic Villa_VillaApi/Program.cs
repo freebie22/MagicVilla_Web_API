@@ -25,8 +25,7 @@ builder.Services.AddSingleton(typeof(ILogging<>), typeof(LoggingGeneric<>));
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSQLConnection")));
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IVillaRepository, VillaRepository>();
-
-
+builder.Services.AddScoped<IVillaNumberRepository, VillaNumberRepository>();
 
 var app = builder.Build();
 
