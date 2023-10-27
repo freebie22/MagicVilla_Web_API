@@ -1,0 +1,86 @@
+﻿@using MagicVilla_Web.Models.DTO;
+@model List<VillaDTO>
+
+<style>
+    th{
+        text-align: center;
+    }
+</style>
+
+<div class="container p-3 border">
+    <div class="row pb-2">
+        <div class="col">
+            <h1 class="text-primary">Villa List</h1>
+        </div>
+        <div class="col text-end pt-1">
+            <a asp-controller="Villa" asp-action="CreateVilla" class="btn btn-outline-primary"><i class="bi bi-plus-square-fill"></i>Create New Villa</a>
+        </div>
+    </div>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>
+                    <p>Villa ID</p>
+                </th>
+                <th>
+                    <p>Villa Name</p>
+                </th>
+                <th>
+                    <p>Villa Occupancy</p>
+                </th>
+                <th>
+                    <p>Villa Sqft</p>
+                </th>
+                <th>
+                    <p>Villa Rate</p>
+                </th>
+                <th>
+                    <p>Villa Amenity</p>
+                </th>
+                <th>
+                    <p>Villa ImageUrl</p>
+                </th>
+                <th>
+                    <p>Update</p>
+                </th>
+                <th>
+                    <p>Delete</p>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var villa in Model)
+            {
+                <tr>
+                    <td>
+                        <p>@villa.Id</p>
+                    </td>
+                    <td>
+                        <p>@villa.Name</p>
+                    </td>
+                    <td>
+                        <p>@villa.Occupancy</p>
+                    </td>
+                    <td>
+                        <p>@villa.Sqft</p>
+                    </td>
+                    <td>
+                        <p>@villa.Rate</p>
+                    </td>
+                    <td>
+                        <p>@(villa.Amenity ?? "No Amenity providen to this villa")</p>
+                    </td>
+                    <td>
+                        <p>@(villa.ImageUrl ?? "No Image providen to this villa")</p>
+                    </td>
+                    <td style="text-align: center">
+                        <a asp-controller="Villa" asp-action="UpdateVilla" class="btn btn-outline-primary"><i class="arrow-up-right-square-fill"></i>Update Villa</a>
+                    </td>
+                    <td style="text-align: center">
+                        <a asp-controller="Villa" asp-action="DeleteVilla" class="btn btn-outline-primary"><i class="bi bi-trash-fill"></i>Delete Villa</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
