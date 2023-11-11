@@ -5,12 +5,15 @@ using MagicVilla_Web.Services.IServices;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
+
 namespace MagicVilla_Web.Controllers
 {
+
     public class VillaController : Controller
     {
         private readonly IVillaService _service;
         private readonly IMapper _mapper;
+        
 
         public VillaController(IVillaService service, IMapper mapper)
         {
@@ -20,6 +23,9 @@ namespace MagicVilla_Web.Controllers
         [HttpGet(Name = "Index")]
         public async Task<IActionResult> Index()
         {
+            //string text = System.IO.File.ReadAllText(@"C:\Users\ArtemBoy\Desktop\C# Study\Magic Villa\freebie22\MagicVilla_Web_API\MagicVilla_Web\Controllers\Villas.json");
+            //var jsonVillas = JsonConvert.DeserializeObject<List<VillaDTO>>(text);
+            //return View(jsonVillas);
             List<VillaDTO> list = new List<VillaDTO>();
 
             var response = await _service.GetAllAsync<APIResponse>();
@@ -27,7 +33,10 @@ namespace MagicVilla_Web.Controllers
             if (response != null && response.IsSuccess == true)
             {
                 list = JsonConvert.DeserializeObject<List<VillaDTO>>(Convert.ToString(response.Result));
+                //string jsonText = JsonConvert.SerializeObject(list, Formatting.Indented);
+                //System.IO.File.WriteAllLines(@"C:\Users\ArtemBoy\Desktop\C# Study\Magic Villa\freebie22\MagicVilla_Web_API\MagicVilla_Web\Controllers\Villas.json", new [] {jsonText});
             }
+
             return View(list);
         }
 
@@ -47,8 +56,8 @@ namespace MagicVilla_Web.Controllers
             } 
 
             return View(villaCreateDTO);
-            
         }
+
 
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
@@ -58,16 +67,15 @@ namespace MagicVilla_Web.Controllers
                 return View(nameof(Index));
             }
 
-            VillaDTO villa = new();
-
             var response = await _service.GetAsync<APIResponse>(id);
 
             if(response != null && response.IsSuccess)
             {
-                villa = JsonConvert.DeserializeObject<VillaDTO>(Convert.ToString(response.Result));
+                var villa = JsonConvert.DeserializeObject<VillaDTO>(Convert.ToString(response.Result));
+                return View(_mapper.Map<VillaUpdateDTO>(villa));
             }
 
-            return View(villa);
+            return NotFound();
         }
 
         [HttpPost]
@@ -93,16 +101,15 @@ namespace MagicVilla_Web.Controllers
                 return View(nameof(Index));
             }
 
-            var villaDTO = new VillaUpdateDTO();
-
             var responseToUpdate = await _service.GetAsync<APIResponse>(id);
 
             if(responseToUpdate != null && responseToUpdate.IsSuccess)
             {
-                villaDTO = JsonConvert.DeserializeObject<VillaUpdateDTO>(Convert.ToString(responseToUpdate.Result));
+                VillaDTO villaDTO = JsonConvert.DeserializeObject<VillaDTO>(Convert.ToString(responseToUpdate.Result));
+                return View(_mapper.Map<VillaUpdateDTO>(villaDTO));
             }
 
-            return View(villaDTO);
+            return NotFound();
         }
 
         [HttpPost]

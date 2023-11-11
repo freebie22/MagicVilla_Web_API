@@ -2,6 +2,7 @@
 using MagicVilla_Web.Models;
 using MagicVilla_Web.Services.IServices;
 using Newtonsoft.Json;
+using System.Net;
 using System.Text;
 
 namespace MagicVilla_Web.Services
@@ -15,7 +16,6 @@ namespace MagicVilla_Web.Services
         {
             responseModel = new APIResponse();
             this.httpClient = httpClient;
-
         }
 
         public async Task<T> SendAsync<T>(APIRequest request)
@@ -50,8 +50,30 @@ namespace MagicVilla_Web.Services
                 response = await client.SendAsync(message);
 
                 var apiContent = await response.Content.ReadAsStringAsync();
-                var apiResponse = JsonConvert.DeserializeObject<T>(apiContent);
-                return apiResponse;
+
+                APIResponse apiResponse = JsonConvert.DeserializeObject<APIResponse>(apiContent);
+
+                try
+                {
+                    if(apiResponse.StatusCode == HttpStatusCode.BadRequest || apiResponse.StatusCode == HttpStatusCode.NotFound)
+                    {
+                        throw new BadHttpRequestException("Client Error: Something went wrong with validation of your data.", StatusCodes.Status400BadRequest);
+                    }
+                }
+
+                catch(BadHttpRequestException ex)
+                {
+                    apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                    apiResponse.IsSuccess = false;
+                    apiResponse.Errors.Add(ex.Message);
+                    var res = JsonConvert.SerializeObject(apiResponse);
+                    var returnObj = JsonConvert.DeserializeObject<T>(res);
+                    return returnObj;
+                }
+
+                var APIResponse = JsonConvert.DeserializeObject<T>(apiContent);
+
+                return APIResponse;
             }
 
             catch(Exception ex) 

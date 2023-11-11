@@ -18,29 +18,29 @@
     }
 
     /// <summary>
-    /// Non-generic implementaion of interface ILogging
+    /// Base implementaion of interface ILogging
     /// </summary>
     public class Logging : ILogging
     {
         public void Log(string message, LoggingTypes type)
         {
-            switch ((int)type)
+            switch (type)
             {
-                case 1:
+                case LoggingTypes.Info:
                     Console.ForegroundColor = ConsoleColor.DarkGreen;
                     Console.Write($"Info - ");
                     Console.ForegroundColor = ConsoleColor.Black;
                     Console.Write(message);
                     break;
-                case 2:
+                case LoggingTypes.Error:
                     Console.ForegroundColor = ConsoleColor.DarkRed;
                     Console.WriteLine($"Logger -> Error - {message}.");
                     break;
-                case 3:
+                case LoggingTypes.Warning:
                     Console.ForegroundColor = ConsoleColor.DarkYellow;
                     Console.WriteLine($"Logger -> Warning - {message}.");
                     break;
-                case 4:
+                case LoggingTypes.Debug:
                     Console.ForegroundColor = ConsoleColor.DarkBlue;
                     Console.WriteLine($"Logger -> Debug - {message}.");
                     break;
@@ -55,23 +55,23 @@
     {
         public void Log(string message, LoggingTypes type)
         {
-            switch ((int)type)
+            switch (type)
             {
-                case 1:
+                case LoggingTypes.Info:
                     Console.ForegroundColor = ConsoleColor.DarkGreen;
-                    Console.Write($"{typeof(T).Name} Info - ");
+                    Console.Write($"{typeof(T).Name} Info -> {DateTime.Now} -> ");
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.Write(message + "\n");
                     break;
-                case 2:
+                case LoggingTypes.Error:
                     Console.ForegroundColor = ConsoleColor.DarkRed;
-                    Console.WriteLine($"{typeof(T).Name} Logger -> Error - {message}.");
+                    Console.WriteLine($"{typeof(T).Name} Logger -> {DateTime.Now} -> Error - {message}.");
                     break;
-                case 3:
+                case LoggingTypes.Warning:
                     Console.ForegroundColor = ConsoleColor.DarkYellow;
                     Console.WriteLine($"{typeof(T).Name} Logger -> Warning - {message}.");
                     break;
-                case 4:
+                case LoggingTypes.Debug:
                     Console.ForegroundColor = ConsoleColor.DarkBlue;
                     Console.WriteLine($"{typeof(T).Name} Logger -> Debug - {message}.");
                     break;

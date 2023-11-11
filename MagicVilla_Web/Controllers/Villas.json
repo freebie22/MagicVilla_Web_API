@@ -1,0 +1,62 @@
+[
+  {
+    "Id": 1,
+    "Name": "Beautiful Villa",
+    "Details": "Patch details",
+    "Rate": 1000.0,
+    "Sqft": 1000,
+    "Occupancy": 1000,
+    "ImageUrl": "asdsadasda",
+    "Amenity": "Сральник, умивальник"
+  },
+  {
+    "Id": 2,
+    "Name": "Diamond Villa",
+    "Details": "Some default diamond villa details",
+    "Rate": 300.0,
+    "Sqft": 650,
+    "Occupancy": 6,
+    "ImageUrl": "",
+    "Amenity": ""
+  },
+  {
+    "Id": 3,
+    "Name": "Ukrainian Villa",
+    "Details": "Some default ukrainian villa details",
+    "Rate": 400.0,
+    "Sqft": 750,
+    "Occupancy": 7,
+    "ImageUrl": "",
+    "Amenity": ""
+  },
+  {
+    "Id": 1002,
+    "Name": "MVC Villa",
+    "Details": "Details for MVC Villa",
+    "Rate": 1000.0,
+    "Sqft": 1000,
+    "Occupancy": 1000,
+    "ImageUrl": "asdadsa",
+    "Amenity": "sadasda"
+  },
+  {
+    "Id": 1005,
+    "Name": "asdsada",
+    "Details": "",
+    "Rate": 1000.0,
+    "Sqft": 1000,
+    "Occupancy": 10000,
+    "ImageUrl": "",
+    "Amenity": ""
+  },
+  {
+    "Id": 1007,
+    "Name": "asdada",
+    "Details": null,
+    "Rate": 1000.0,
+    "Sqft": 1000,
+    "Occupancy": 1000,
+    "ImageUrl": null,
+    "Amenity": null
+  }
+]

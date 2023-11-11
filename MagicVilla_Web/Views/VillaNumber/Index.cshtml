@@ -1,0 +1,60 @@
+﻿@using MagicVilla_Web.Models.DTO;
+@model List<VillaNumberDTO>
+
+<style>
+    th {
+        text-align: center;
+    }
+    td{
+        text-align: center;
+    }
+
+</style>
+
+<div class="container p-3 border">
+    <div class="row pb-2">
+        <div class="col">
+            <h1 class="text-primary">Villa List</h1>
+        </div>
+        <div class="col text-end pt-1">
+            <a asp-controller="VillaNumber" asp-action="Create" class="btn btn-outline-primary"><i class="bi bi-plus-square-fill"></i>Create New Villa Number</a>
+        </div>
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    <p>VillaNo</p>
+                </th>
+                <th>
+                    <p>Related Villa Id</p>
+                </th>
+                <th>
+                    <p>Update</p>
+                </th>
+                <th>
+                    <p>Delete</p>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var villa in Model)
+            {
+                <tr>
+                    <td>
+                        <p><a asp-controller="Villa" asp-action="Update" asp-route-id="@villa.Villa.Id" style="color: #ffffff">@villa.Villa.Name</a></p>
+                    </td>
+                    <td>
+                        <p>@villa.VillaNo</p>
+                    </td>
+                    <td style="text-align: center">
+                        <a asp-controller="VillaNumber" asp-route-id="@villa.VillaNo" asp-action="Update" class="btn btn-info"><i class="arrow-up-right-square-fill"></i>Update Villa Number</a>
+                    </td>
+                    <td style="text-align: center">
+                        <a asp-controller="VillaNumber" asp-route-id="@villa.VillaNo" asp-action="Delete" class="btn btn-danger"><i class="bi bi-trash-fill"></i>Delete Villa Number</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

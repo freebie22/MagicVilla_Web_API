@@ -70,19 +70,22 @@ namespace Magic_Villa_VillaApi.Controllers
                 if (villa == null)
                 {
                     //_logger.LogError($"ERROR - Villa with such an id cannot be found.");
-                    return NotFound();
+                    throw new ArgumentNullException(nameof(id), "Villa with such an id cannot be found.");
                 }
 
                 //_logger.LogInformation($"SUCCESS - Succefully got {villa.Name} from VillaStore.");
+                _logger.Log($"Villa with id = {id} has been successfully retrived from Database.", LoggingTypes.Info);
                 _response.Result = _mapper.Map<VillaDTO>(villa);
                 _response.StatusCode = HttpStatusCode.OK;
                 return Ok(_response);
             }
-            catch(Exception ex)
+            catch(ArgumentNullException ex)
             {
                 _response.Errors = new List<string> { ex.Message };
+                _response.IsSuccess = false;
+                _response.StatusCode = HttpStatusCode.NotFound;
+                return NotFound(_response);
             }
-            return _response;
         }
 
         [HttpPost]
@@ -95,7 +98,7 @@ namespace Magic_Villa_VillaApi.Controllers
             {
                 if (createDTO == null)
                 {
-                    return BadRequest(createDTO);
+                    throw new ArgumentNullException(nameof(createDTO), "Error with model for create a new Villa");
                 }
 
                 if (createDTO.Name == "string")
@@ -124,7 +127,7 @@ namespace Magic_Villa_VillaApi.Controllers
                 _response.StatusCode = HttpStatusCode.BadRequest;
                 _response.IsSuccess = false;
                 _response.Errors = new List<string>() { ex.Message };
-                throw;
+                return BadRequest(_response);
             }
             catch (Exception ex)
             {
@@ -185,24 +188,21 @@ namespace Magic_Villa_VillaApi.Controllers
             if (id == 0)
             {
                 ModelState.AddModelError("ID Error", "ID of villa cannot be 0");
-                return BadRequest(ModelState);
+                throw new ArgumentException("Villa cannot have an id = 0.", nameof(id));
             }
+
+            if(_repository.GetAsync(v => v.Id == id, false) == null)
+            {
+                throw new ArgumentNullException(nameof(id), $"Villa with id = {id} cannot be found in Database.");
+            }
+
+            if(id != villaDTO.Id)
+                {
+                    throw new ArgumentException("Id of request and VillaId don't match.", nameof(id));
+                }
 
             Villa model = _mapper.Map<Villa>(villaDTO);
             model.UpdateDate = DateTime.Now;
-
-            //Villa updatedVilla = new Villa()
-            //{
-            //    Id = villaDTO.Id,
-            //    Name = villaDTO.Name,
-            //    Amenity = villaDTO.Amenity,
-            //    Details = villaDTO.Details,
-            //    ImageUrl = villaDTO.ImageUrl,
-            //    Sqft = villaDTO.Sqft,
-            //    Occupancy = villaDTO.Occupancy,
-            //    Rate = villaDTO.Rate,
-            //    UpdateDate = DateTime.Now
-            //};
 
             await _repository.UpdateAsync(model);
             await _repository.SaveAsync();
@@ -214,6 +214,24 @@ namespace Magic_Villa_VillaApi.Controllers
 
             return Ok(_response);
             }
+
+
+            catch(ArgumentNullException ex)
+            {
+                _response.Errors = new() { ex.Message };
+                _response.IsSuccess = false;
+                _response.StatusCode = HttpStatusCode.NotFound;
+                return NotFound(_response);
+            }
+
+            catch (ArgumentException ex)
+            {
+                _response.Errors = new List<string>() { ex.Message };
+                _response.IsSuccess = false;
+                _response.StatusCode = HttpStatusCode.BadRequest;
+                return BadRequest(_response);
+            }
+
             catch (Exception ex)
             {
                _response.Errors = new List<string>() { ex.Message };
