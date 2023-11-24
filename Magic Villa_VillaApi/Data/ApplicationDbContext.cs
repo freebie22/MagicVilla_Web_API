@@ -13,6 +13,8 @@ namespace Magic_Villa_VillaApi.Data
               
         }
 
+
+        public DbSet<LocalUser> LocalUsers { get; set; }
         /// <summary>
         /// Villas Table in MagicVilla_API Database
         /// </summary>

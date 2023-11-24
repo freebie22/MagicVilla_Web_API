@@ -38,7 +38,9 @@
                     break;
                 case LoggingTypes.Warning:
                     Console.ForegroundColor = ConsoleColor.DarkYellow;
-                    Console.WriteLine($"Logger -> Warning - {message}.");
+                    Console.Write($"Info - ");
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    Console.Write(message);
                     break;
                 case LoggingTypes.Debug:
                     Console.ForegroundColor = ConsoleColor.DarkBlue;

@@ -5,6 +5,7 @@ using Magic_Villa_VillaApi.Mapper;
 using Magic_Villa_VillaApi.Models;
 using Magic_Villa_VillaApi.Models.DTO;
 using Magic_Villa_VillaApi.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,21 +23,21 @@ namespace Magic_Villa_VillaApi.Controllers
     {
         private readonly ILogging<VillaAPIController> _logger;
         private readonly IMapper _mapper;
-        private readonly ApplicationDbContext _context;
         private readonly IVillaRepository _repository;
         protected APIResponse _response;
 
-        public VillaAPIController(ILogging<VillaAPIController> logger, ApplicationDbContext context, IMapper mapper, IVillaRepository repository)
+        public VillaAPIController(ILogging<VillaAPIController> logger, IMapper mapper, IVillaRepository repository)
         {
             _logger = logger;    
-            _context = context;
             _mapper = mapper;
             _repository = repository;
             _response = new APIResponse();
         }
 
         [HttpGet]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<APIResponse>> GetVillas()
         {
             //_logger.Log(message:"Succefully got villas from Database", type:LoggingTypes.Info);
@@ -47,14 +48,11 @@ namespace Magic_Villa_VillaApi.Controllers
             return Ok(_response);
         } 
 
-
-        //[ProducesResponseType(200)]/*, Type = typeof(VillaDTO))*/
-        //[ProducesResponseType(400)]
-        //[ProducesResponseType(404)]
         [HttpGet("{id:int}", Name = "GetVilla")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Roles = "Admin")]
         public async Task <ActionResult<APIResponse>> GetVilla(int id)
         {
             try
@@ -92,6 +90,7 @@ namespace Magic_Villa_VillaApi.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<APIResponse>> CreateVilla([FromBody]VillaCreateDTO createDTO)
         {
             try
@@ -141,6 +140,7 @@ namespace Magic_Villa_VillaApi.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Roles = "CUSTOM")]
         public async Task<ActionResult<APIResponse>> DeleteVilla(int id)
         {
             try

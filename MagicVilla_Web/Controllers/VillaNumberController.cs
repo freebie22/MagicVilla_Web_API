@@ -102,6 +102,7 @@ namespace MagicVilla_Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(VillaNumberDTO villaDTO)
         {
             if (villaDTO != null)
@@ -147,6 +148,7 @@ namespace MagicVilla_Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Update(VillaNumberUpdateDTO villaDTO)
         {
             if (villaDTO != null)
