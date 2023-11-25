@@ -1,6 +1,9 @@
 using MagicVilla_Web.Mapper;
+using MagicVilla_Web.Repository;
 using MagicVilla_Web.Services;
 using MagicVilla_Web.Services.IServices;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Net.Sockets;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,8 +12,28 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddAutoMapper(typeof(MappingConfig));
 builder.Services.AddHttpClient<IVillaService, VillaService>();
 builder.Services.AddHttpClient<IVillaNumberService, VillaNumberService>();
+builder.Services.AddHttpClient<IAuthService, AuthService>();
 builder.Services.AddScoped<IVillaService, VillaService>();
 builder.Services.AddScoped<IVillaNumberService, VillaNumberService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>(); 
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromDays(1);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+{
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromDays(1);
+    options.LoginPath = "/Auth/Login";
+    options.AccessDeniedPath = "/Auth/AccessDenied";
+    options.SlidingExpiration = true;
+
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -21,11 +44,14 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseSession();
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
