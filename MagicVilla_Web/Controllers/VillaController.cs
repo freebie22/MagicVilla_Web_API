@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MagicVilla_Utility;
 using MagicVilla_Web.Models;
 using MagicVilla_Web.Models.DTO;
 using MagicVilla_Web.Services.IServices;
@@ -28,7 +29,7 @@ namespace MagicVilla_Web.Controllers
             //return View(jsonVillas);
             List<VillaDTO> list = new List<VillaDTO>();
 
-            var response = await _service.GetAllAsync<APIResponse>();
+            var response = await _service.GetAllAsync<APIResponse>(HttpContext.Session.GetString(SD.SessionToken));
 
             if (response != null && response.IsSuccess == true)
             {
@@ -49,7 +50,7 @@ namespace MagicVilla_Web.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateVilla(VillaCreateDTO villaCreateDTO)
         {
-            var response = await _service.CreateAsync<APIResponse>(villaCreateDTO);
+            var response = await _service.CreateAsync<APIResponse>(villaCreateDTO, HttpContext.Session.GetString(SD.SessionToken));
             if(response != null && response.IsSuccess == true)
             {
                 return RedirectToAction(nameof(Index));
@@ -67,7 +68,7 @@ namespace MagicVilla_Web.Controllers
                 return View(nameof(Index));
             }
 
-            var response = await _service.GetAsync<APIResponse>(id);
+            var response = await _service.GetAsync<APIResponse>(id, HttpContext.Session.GetString(SD.SessionToken));
 
             if(response != null && response.IsSuccess)
             {
@@ -83,7 +84,7 @@ namespace MagicVilla_Web.Controllers
         {
             if(villaDTO != null)
             {
-                var response = await _service.DeleteAsync<APIResponse>(villaDTO.Id);
+                var response = await _service.DeleteAsync<APIResponse>(villaDTO.Id, HttpContext.Session.GetString(SD.SessionToken));
 
                 if(response != null && response.IsSuccess)
                 {
@@ -101,7 +102,7 @@ namespace MagicVilla_Web.Controllers
                 return View(nameof(Index));
             }
 
-            var responseToUpdate = await _service.GetAsync<APIResponse>(id);
+            var responseToUpdate = await _service.GetAsync<APIResponse>(id, HttpContext.Session.GetString(SD.SessionToken));
 
             if(responseToUpdate != null && responseToUpdate.IsSuccess)
             {
@@ -117,7 +118,7 @@ namespace MagicVilla_Web.Controllers
         {
             if (villaDTO != null)
             {
-                var response = await _service.UpdateAsync<APIResponse>(villaDTO);
+                var response = await _service.UpdateAsync<APIResponse>(villaDTO, HttpContext.Session.GetString(SD.SessionToken));
 
                 if(response != null && response.IsSuccess == true)
                 {

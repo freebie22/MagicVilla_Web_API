@@ -3,6 +3,7 @@ using MagicVilla_Web.Models;
 using MagicVilla_Web.Services.IServices;
 using Newtonsoft.Json;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Text;
 
 namespace MagicVilla_Web.Services
@@ -46,6 +47,8 @@ namespace MagicVilla_Web.Services
                         break;
                 }
 
+                message.Headers.Authorization = new AuthenticationHeaderValue("Bearer", request.Token);
+
                 HttpResponseMessage response = null;
                 response = await client.SendAsync(message);
 
@@ -55,7 +58,7 @@ namespace MagicVilla_Web.Services
 
                 try
                 {
-                    if(apiResponse.StatusCode == HttpStatusCode.BadRequest || apiResponse.StatusCode == HttpStatusCode.NotFound)
+                    if(apiResponse != null &&(apiResponse.StatusCode == HttpStatusCode.BadRequest || apiResponse.StatusCode == HttpStatusCode.NotFound))
                     {
                         throw new BadHttpRequestException("Client Error: Something went wrong with validation of your data.", StatusCodes.Status400BadRequest);
                     }

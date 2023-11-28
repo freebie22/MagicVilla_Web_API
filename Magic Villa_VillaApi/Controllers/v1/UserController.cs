@@ -6,10 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Runtime.CompilerServices;
 
-namespace Magic_Villa_VillaApi.Controllers
+namespace Magic_Villa_VillaApi.Controllers.v1
 {
     [ApiController]
-    [Route("api/UsersAuth")]
+    [Route("api/v{version:apiVersion}/UsersAuth")]
+    [ApiVersionNeutral]
     public class UserController : ControllerBase
     {
         private readonly IUserRepository _userRepo;
@@ -44,7 +45,7 @@ namespace Magic_Villa_VillaApi.Controllers
                 return Ok(_response);
             }
 
-            catch(NullReferenceException ex)
+            catch (NullReferenceException ex)
             {
                 _response.IsSuccess = false;
                 _response.StatusCode = HttpStatusCode.BadRequest;
@@ -62,7 +63,7 @@ namespace Magic_Villa_VillaApi.Controllers
             {
                 bool ifUserNameIsUnique = _userRepo.IsUniqueUser(model.UserName);
 
-                if(!ifUserNameIsUnique)
+                if (!ifUserNameIsUnique)
                 {
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
