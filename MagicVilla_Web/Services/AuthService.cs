@@ -20,7 +20,7 @@ namespace MagicVilla_Web.Repository
         {
             return SendAsync<T>(new APIRequest()
             {
-                Url = _villaUrl + "/api/UsersAuth/Login",
+                Url = _villaUrl + "/api/v1/UsersAuth/Login",
                 Data = loginRequestDTO,
                 APIType = SD.ApiTypes.POST
             });
@@ -30,7 +30,7 @@ namespace MagicVilla_Web.Repository
         {
             return SendAsync<T>(new APIRequest()
             {
-                Url = _villaUrl + "/api/UsersAuth/Register",
+                Url = _villaUrl + "/api/v1/UsersAuth/Register",
                 Data = registrationRequestDTO,
                 APIType = SD.ApiTypes.POST
             });
