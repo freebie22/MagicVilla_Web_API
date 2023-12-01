@@ -61,11 +61,7 @@ namespace MagicVilla_Web.Services
 
                 try
                 {
-<<<<<<< HEAD
-                    if(apiResponse != null && (apiResponse.StatusCode == HttpStatusCode.BadRequest || apiResponse.StatusCode == HttpStatusCode.NotFound))
-=======
                     if(apiResponse != null &&(apiResponse.StatusCode == HttpStatusCode.BadRequest || apiResponse.StatusCode == HttpStatusCode.NotFound))
->>>>>>> fd137f8d2e755882acdbffb362117fba528796d9
                     {
                         throw new BadHttpRequestException("Client Error: Something went wrong with validation of your data.", StatusCodes.Status400BadRequest);
                     }

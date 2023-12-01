@@ -34,10 +34,7 @@ namespace Magic_Villa_VillaApi.Controllers.v1
 
 
         [HttpGet]
-<<<<<<< HEAD
-=======
         [MapToApiVersion("1.0")]
->>>>>>> fd137f8d2e755882acdbffb362117fba528796d9
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<APIResponse>> GetVillaNumbers()
@@ -55,27 +52,7 @@ namespace Magic_Villa_VillaApi.Controllers.v1
             return Ok(_response);
         }
 
-        [HttpGet("getStrings")]
-<<<<<<< HEAD
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<APIResponse> GetString()
-        {
-            _response.Result = new[] { "value1", "value2" };
-            _response.StatusCode = HttpStatusCode.OK;
-            return Ok(_response);
-        }
-
         [HttpGet("{villaNo:int}", Name = "GetVillaNumber")]
-=======
-        public async Task<ActionResult<APIResponse>> Get()
-        {
-            IEnumerable<string> strings = new[] { "value1", "value2" };
-            _response.Result = strings;
-            return Ok(_response);
-        }
-
-        [HttpGet("{villaNo:int}")]
->>>>>>> fd137f8d2e755882acdbffb362117fba528796d9
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

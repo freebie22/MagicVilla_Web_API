@@ -36,15 +36,6 @@ builder.Services.AddAuthentication(x =>
         };
     });
 
-<<<<<<< HEAD
-builder.Services.AddControllers(options =>
-{
-    options.CacheProfiles.Add("Default30", new CacheProfile()
-    {
-        Duration = 30,
-    });
-}).AddNewtonsoftJson().AddXmlDataContractSerializerFormatters();
-=======
 builder.Services.AddApiVersioning(options =>
 {
     options.DefaultApiVersion = new ApiVersion(1, 0);

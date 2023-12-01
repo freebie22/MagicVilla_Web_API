@@ -215,11 +215,7 @@ namespace Magic_Villa_VillaApi.Controllers.v1
                     throw new ArgumentException("Villa cannot have an id = 0.", nameof(id));
                 }
 
-<<<<<<< HEAD
-                if (await _repository.GetAsync(v => v.Id == id, false) == null)
-=======
                 if (_repository.GetAsync(v => v.Id == id, false) == null)
->>>>>>> fd137f8d2e755882acdbffb362117fba528796d9
                 {
                     throw new ArgumentNullException(nameof(id), $"Villa with id = {id} cannot be found in Database.");
                 }
@@ -232,11 +228,8 @@ namespace Magic_Villa_VillaApi.Controllers.v1
                 Villa model = _mapper.Map<Villa>(villaDTO);
                 model.UpdateDate = DateTime.Now;
 
-                await _repository.UpdateAsync(model);
-<<<<<<< HEAD
-=======
-                await _repository.SaveAsync();
->>>>>>> fd137f8d2e755882acdbffb362117fba528796d9
+            await _repository.UpdateAsync(model);
+            await _repository.SaveAsync();
 
                 _logger.Log($"{model.Name} has been successfully updated.", LoggingTypes.Info);
 
