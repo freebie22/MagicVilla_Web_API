@@ -47,6 +47,8 @@ namespace MagicVilla_Web.Services
                         break;
                 }
 
+                message.Headers.Authorization = new AuthenticationHeaderValue("Bearer", request.Token);
+
                 HttpResponseMessage response = null;
 
                 message.Headers.Authorization = new AuthenticationHeaderValue("Bearer", request.Token);
@@ -59,7 +61,11 @@ namespace MagicVilla_Web.Services
 
                 try
                 {
+<<<<<<< HEAD
                     if(apiResponse != null && (apiResponse.StatusCode == HttpStatusCode.BadRequest || apiResponse.StatusCode == HttpStatusCode.NotFound))
+=======
+                    if(apiResponse != null &&(apiResponse.StatusCode == HttpStatusCode.BadRequest || apiResponse.StatusCode == HttpStatusCode.NotFound))
+>>>>>>> fd137f8d2e755882acdbffb362117fba528796d9
                     {
                         throw new BadHttpRequestException("Client Error: Something went wrong with validation of your data.", StatusCodes.Status400BadRequest);
                     }

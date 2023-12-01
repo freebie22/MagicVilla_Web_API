@@ -36,6 +36,7 @@ builder.Services.AddAuthentication(x =>
         };
     });
 
+<<<<<<< HEAD
 builder.Services.AddControllers(options =>
 {
     options.CacheProfiles.Add("Default30", new CacheProfile()
@@ -43,6 +44,22 @@ builder.Services.AddControllers(options =>
         Duration = 30,
     });
 }).AddNewtonsoftJson().AddXmlDataContractSerializerFormatters();
+=======
+builder.Services.AddApiVersioning(options =>
+{
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ReportApiVersions = true;
+});
+
+builder.Services.AddVersionedApiExplorer(options =>
+{
+    options.GroupNameFormat = "'v'VVV";
+    options.SubstituteApiVersionInUrl = true;
+});
+
+builder.Services.AddControllers(/*myOptions*/).AddNewtonsoftJson().AddXmlDataContractSerializerFormatters();
+>>>>>>> fd137f8d2e755882acdbffb362117fba528796d9
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddAutoMapper(typeof(MappingConfig));

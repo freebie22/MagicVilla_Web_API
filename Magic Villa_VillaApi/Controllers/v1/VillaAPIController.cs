@@ -42,7 +42,7 @@ namespace Magic_Villa_VillaApi.Controllers.v1
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ResponseCache(CacheProfileName = "Default30")]
         public async Task<ActionResult<APIResponse>> GetVillas([FromQuery(Name = "filterOccupancy")]int? occupancy, [FromQuery]string? search,
-            int pageSize = 2, int pageNumber = 1)
+            int pageSize = 0, int pageNumber = 1)
         {
             //_logger.Log(message:"Succefully got villas from Database", type:LoggingTypes.Info);
             //return Ok(await _context.Villas.ToListAsync());
@@ -215,7 +215,11 @@ namespace Magic_Villa_VillaApi.Controllers.v1
                     throw new ArgumentException("Villa cannot have an id = 0.", nameof(id));
                 }
 
+<<<<<<< HEAD
                 if (await _repository.GetAsync(v => v.Id == id, false) == null)
+=======
+                if (_repository.GetAsync(v => v.Id == id, false) == null)
+>>>>>>> fd137f8d2e755882acdbffb362117fba528796d9
                 {
                     throw new ArgumentNullException(nameof(id), $"Villa with id = {id} cannot be found in Database.");
                 }
@@ -229,6 +233,10 @@ namespace Magic_Villa_VillaApi.Controllers.v1
                 model.UpdateDate = DateTime.Now;
 
                 await _repository.UpdateAsync(model);
+<<<<<<< HEAD
+=======
+                await _repository.SaveAsync();
+>>>>>>> fd137f8d2e755882acdbffb362117fba528796d9
 
                 _logger.Log($"{model.Name} has been successfully updated.", LoggingTypes.Info);
 

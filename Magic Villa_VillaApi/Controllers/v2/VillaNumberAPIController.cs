@@ -4,7 +4,10 @@ using Magic_Villa_VillaApi.Data;
 using Magic_Villa_VillaApi.Models;
 using Magic_Villa_VillaApi.Models.DTO;
 using Magic_Villa_VillaApi.Repository;
+<<<<<<< HEAD
 using Microsoft.AspNetCore.Authorization;
+=======
+>>>>>>> fd137f8d2e755882acdbffb362117fba528796d9
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -32,6 +35,7 @@ namespace Magic_Villa_VillaApi.Controllers.v2
             _villaRepository = villaRepository;
         }
 
+<<<<<<< HEAD
         [HttpGet("getStrings")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<APIResponse> GetString()
@@ -41,5 +45,17 @@ namespace Magic_Villa_VillaApi.Controllers.v2
             return Ok(_response);
         }
 
+=======
+
+        [HttpGet("getStrings")]
+        public async Task<ActionResult<APIResponse>> Get()
+        {
+            IEnumerable<string> strings = new[] { "Artem", "Boikov" };
+            _response.Result = strings;
+            return Ok(_response);
+        }
+
+        
+>>>>>>> fd137f8d2e755882acdbffb362117fba528796d9
     }
 }
