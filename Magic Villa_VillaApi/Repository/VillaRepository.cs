@@ -8,17 +8,28 @@ namespace Magic_Villa_VillaApi.Repository
     public sealed class VillaRepository : Repository<Villa>, IVillaRepository
     {
         private readonly ApplicationDbContext _context;
+        private readonly IDbContextFactory<ApplicationDbContext> _dbContextFactory;
 
-        public VillaRepository(ApplicationDbContext context) : base(context)
+        public VillaRepository(ApplicationDbContext context, IDbContextFactory<ApplicationDbContext> dbContextFactory) : base(context)
         {
             _context = context;
+            _dbContextFactory = dbContextFactory;
+        }
+
+        public async Task SaveAsync()
+        {
+            await _context.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(Villa entity)
         {
-            entity.UpdateDate = DateTime.Now;
-            _context.Villas.Update(entity);
-            await SaveAsync();
+            using(var context = await _dbContextFactory.CreateDbContextAsync())
+            {
+                entity.UpdateDate = DateTime.Now;
+                context.Villas.Update(entity);
+                await context.SaveChangesAsync();
+            }
+
         }
     }
 }

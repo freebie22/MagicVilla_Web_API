@@ -46,6 +46,7 @@ namespace Magic_Villa_VillaApi.Repository
 
         }
 
+
         public async Task<T> GetAsync(Expression<Func<T, bool>> filter = null, bool isTracked = true, string includeProperties = null)
         {
             IQueryable<T> query = dbSet;
@@ -64,19 +65,13 @@ namespace Magic_Villa_VillaApi.Repository
         public async Task CreateAsync(T entity)
         {
             await dbSet.AddAsync(entity);
-            await SaveAsync();
+            await _context.SaveChangesAsync();
 
         }
 
         public async Task DeleteAsync(T entity)
         {
             dbSet.Remove(entity);
-            await SaveAsync();
-        }
-
-
-        public async Task SaveAsync()
-        {
             await _context.SaveChangesAsync();
         }
     }

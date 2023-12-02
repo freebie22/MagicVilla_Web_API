@@ -1,8 +1,10 @@
 using Magic_Villa_VillaApi.Data;
 using Magic_Villa_VillaApi.Logging;
 using Magic_Villa_VillaApi.Mapper;
+using Magic_Villa_VillaApi.Models;
 using Magic_Villa_VillaApi.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -49,8 +51,14 @@ builder.Services.AddVersionedApiExplorer(options =>
     options.SubstituteApiVersionInUrl = true;
 });
 
-builder.Services.AddControllers(/*myOptions*/).AddNewtonsoftJson().AddXmlDataContractSerializerFormatters();
->>>>>>> fd137f8d2e755882acdbffb362117fba528796d9
+
+builder.Services.AddControllers(options =>
+{
+    options.CacheProfiles.Add("Default30", new CacheProfile()
+    {
+        Duration = 30
+    });
+}).AddNewtonsoftJson().AddXmlDataContractSerializerFormatters();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddAutoMapper(typeof(MappingConfig));
@@ -71,7 +79,8 @@ builder.Services.AddVersionedApiExplorer(options =>
 builder.Services.AddResponseCaching();
 
 #region Dependency Injection
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSQLConnection")), ServiceLifetime.Transient);
+builder.Services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSQLConnection")), ServiceLifetime.Transient);
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddSingleton(typeof(ILogging), typeof(Logging));
 builder.Services.AddSingleton(typeof(ILogging<>), typeof(LoggingGeneric<>));
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));

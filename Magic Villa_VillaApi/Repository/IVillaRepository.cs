@@ -9,5 +9,6 @@ namespace Magic_Villa_VillaApi.Repository
     public interface IVillaRepository : IRepository<Villa>
     {
         Task UpdateAsync(Villa entity);
+        Task SaveAsync();
     }
 }

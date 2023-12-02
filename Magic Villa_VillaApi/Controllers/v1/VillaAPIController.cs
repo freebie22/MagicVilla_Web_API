@@ -60,12 +60,12 @@ namespace Magic_Villa_VillaApi.Controllers.v1
 
             if(!string.IsNullOrEmpty(search))
             {
-                villas = villas.Where(v=> v.Name.ToLower().Contains(search.ToLower()));
+                villas = villas.Where(v => v.Name.ToLower().Contains(search.ToLower()));
             }
 
             Pagination pagination = new() { PageNumber = pageNumber, PageSize = pageSize };
 
-            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(pagination));
+            Response.Headers.Append("X-Pagination", JsonConvert.SerializeObject(pagination));
 
             _response.Result = _mapper.Map<List<VillaDTO>>(villas);
             _response.StatusCode = HttpStatusCode.OK;
@@ -76,7 +76,7 @@ namespace Magic_Villa_VillaApi.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult<APIResponse>> GetVilla(int id)
         {
             try
@@ -114,7 +114,7 @@ namespace Magic_Villa_VillaApi.Controllers.v1
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult<APIResponse>> CreateVilla([FromBody] VillaCreateDTO createDTO)
         {
             try
@@ -164,7 +164,7 @@ namespace Magic_Villa_VillaApi.Controllers.v1
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Authorize(Roles = "CUSTOM")]
+        [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult<APIResponse>> DeleteVilla(int id)
         {
             try
@@ -205,6 +205,7 @@ namespace Magic_Villa_VillaApi.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> UpdateVilla(int id, [FromBody] VillaUpdateDTO villaDTO)
         {
             try
@@ -228,8 +229,7 @@ namespace Magic_Villa_VillaApi.Controllers.v1
                 Villa model = _mapper.Map<Villa>(villaDTO);
                 model.UpdateDate = DateTime.Now;
 
-            await _repository.UpdateAsync(model);
-            await _repository.SaveAsync();
+                await _repository.UpdateAsync(model);
 
                 _logger.Log($"{model.Name} has been successfully updated.", LoggingTypes.Info);
 
@@ -268,6 +268,7 @@ namespace Magic_Villa_VillaApi.Controllers.v1
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> UpdateVillaPartially(int id, JsonPatchDocument<VillaUpdateDTO> patchDTO)
         {
             try

@@ -56,6 +56,7 @@ namespace Magic_Villa_VillaApi.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult<APIResponse>> GetVillaNumber(int villaNo)
         {
             try
@@ -96,6 +97,7 @@ namespace Magic_Villa_VillaApi.Controllers.v1
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult<APIResponse>> CreateVillaNumber([FromBody] VillaNumberCreateDTO villaNumberCreateDTO)
         {
             try
@@ -156,6 +158,7 @@ namespace Magic_Villa_VillaApi.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult<APIResponse>> DeleteNumber(int villaNo)
         {
             try
@@ -200,6 +203,7 @@ namespace Magic_Villa_VillaApi.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult<APIResponse>> UpdateNumber(int villaNo, [FromBody] VillaNumberUpdateDTO updateDTO)
         {
             try
@@ -231,7 +235,6 @@ namespace Magic_Villa_VillaApi.Controllers.v1
                 var villa = _mapper.Map<VillaNumber>(updateDTO);
 
                 await _villaNumberRepository.UpdateAsync(villa);
-                await _villaNumberRepository.SaveAsync();
 
                 _response.Result = $"VillaNumber with villaNo {villaNo} has been updated successfully.";
                 _response.StatusCode = HttpStatusCode.OK;
@@ -250,6 +253,7 @@ namespace Magic_Villa_VillaApi.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult<APIResponse>> UpdateVillaNumberPartially(int villaNo, JsonPatchDocument<VillaNumberUpdateDTO> jsonDTO)
         {
             try

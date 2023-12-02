@@ -57,7 +57,7 @@ namespace Magic_Villa_VillaApi.Controllers.v1
         [HttpPost("Register")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<APIResponse>> Register([FromBody] RegistrationRequestModel model)
+        public async Task<ActionResult<APIResponse>> Register([FromBody] RegistrationRequestDTO model)
         {
             try
             {
